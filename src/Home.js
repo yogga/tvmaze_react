@@ -69,7 +69,7 @@ import { Card, Icon, Image, Grid, Header } from 'semantic-ui-react'
           <>
           {this.state.loading ? (<h1>Loading .......</h1>) :(
               <div>
-            <Header size='large'>Tops Films</Header>
+            <Header style={{marginTop:20}} size='large'>Tops Films</Header>
               <Carousel autoPlay centerMode centerSlidePercentage={40} showStatus="false" >
                   {this.state.dataCarousel.map((data, key) =>{
                       return(
@@ -82,7 +82,7 @@ import { Card, Icon, Image, Grid, Header } from 'semantic-ui-react'
                   }
                   )}
           </Carousel>
-          <Header size='large'>Films Schedule</Header>
+          <Header style={{marginTop:20}} size='large'>Films Schedule</Header>
 
                 <Grid columns={5} divided>
                 {this.state.dataSchedule.map((data, key) =>{

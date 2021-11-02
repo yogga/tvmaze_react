@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import App from './App'
 import Home from './Home'
-import {Film} from './Film'
+import Film from './Film'
 import {Actor} from './Actor'
 import ProtectedRoute from './auth/protected-route'
 
