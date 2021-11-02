@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Carousel } from 'react-responsive-carousel';
 import axios from 'axios'
 import {connect} from 'react-redux'
-import { Card, Icon, Image, Grid } from 'semantic-ui-react'
+import { Card, Icon, Image, Grid, Header } from 'semantic-ui-react'
 
  class Home extends Component {
 
@@ -26,7 +26,7 @@ import { Card, Icon, Image, Grid } from 'semantic-ui-react'
                     b.rating.average < a.rating.average ? -1 : 0
                 })
 
-                let dataRes = sorted.slice(0,50) // diambil hanya 20 data saja dari total 240
+                let dataRes = sorted.slice(0,30) // diambil hanya 30 data saja dari total 240
                 this.setState({
                   dataCarousel:dataRes
                   
@@ -44,7 +44,7 @@ import { Card, Icon, Image, Grid } from 'semantic-ui-react'
             await axios.get(`https://api.tvmaze.com/schedule`, {crossDomain: true})
             .then ((res) => {
 
-              console.log(res.data)
+             // console.log(res.data) untuk cek data sudah masuk ke array 
 
                 let dataRes = res.data
                 this.setState({
@@ -69,10 +69,11 @@ import { Card, Icon, Image, Grid } from 'semantic-ui-react'
           <>
           {this.state.loading ? (<h1>Loading .......</h1>) :(
               <div>
+            <Header size='large'>Tops Films</Header>
               <Carousel autoPlay centerMode centerSlidePercentage={40} showStatus="false" >
                   {this.state.dataCarousel.map((data, key) =>{
                       return(
-                        <div>
+                        <div key={key}>
                         <img style={{height:"auto" , width:"80%"}} alt={data.name} src={data.image.medium}/>
                         {/* <p className="legend">{data.name}</p> */}
                         <p className="legend">{data.rating.average}</p>
@@ -81,17 +82,23 @@ import { Card, Icon, Image, Grid } from 'semantic-ui-react'
                   }
                   )}
           </Carousel>
+          <Header size='large'>Films Schedule</Header>
 
-                <Grid columns={3} divided>
+                <Grid columns={5} divided>
                 {this.state.dataSchedule.map((data, key) =>{
                      var gambar = {...data.show.image}
-
+                     var rating = {...data.show.rating}
                      if(data.show.image === null){
                          gambar = ' https://cdn.pixabay.com/photo/2016/11/15/07/09/photo-manipulation-1825450__480.jpg'
                      }else{
                          gambar = gambar.medium
                      }
                      
+                     if(rating.average === null){
+                        rating = 0
+                    }else{
+                        rating = rating.average
+                    }
                      return(
                 
                 <Grid.Column key={key}>
@@ -101,26 +108,25 @@ import { Card, Icon, Image, Grid } from 'semantic-ui-react'
                     <Card.Header>{data.show.name}</Card.Header>
                     <Card.Meta>
                        Episode : {data.name}
+                    </Card.Meta>
+                    <Card.Meta>   
                        Status : {data.show.status}
                     </Card.Meta>
                     <Card.Description>
-                        Schedule Air Time : {data.show.schedule.time}
+                       Schedule Air Time : {data.show.schedule.time}
                     </Card.Description>
                     </Card.Content>
                     <Card.Content extra>
-                    <a>
-                        <Icon name='user' />
-                        22 Friends
-                    </a>
+                    <h2> 
+                        <Icon name='star' />
+                        {rating}
+                    </h2>
                     </Card.Content>
                 </Card>
                 </Grid.Column>
                 )
                 })}
             </Grid>
-
-       
-
           </div>
           )}
           </>
