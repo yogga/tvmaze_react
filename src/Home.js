@@ -70,7 +70,7 @@ import { Card, Icon, Image, Grid, Header } from 'semantic-ui-react'
           {this.state.loading ? (<h1>Loading .......</h1>) :(
               <div>
             <Header style={{marginTop:20}} size='large'>Tops Films</Header>
-              <Carousel autoPlay centerMode centerSlidePercentage={40} showStatus="false" >
+              <Carousel autoPlay centerMode centerSlidePercentage={30} showStatus="false" >
                   {this.state.dataCarousel.map((data, key) =>{
                       return(
                         <div key={key}>
