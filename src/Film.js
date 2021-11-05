@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Grid, Image, Header, Card, Icon } from 'semantic-ui-react'
+import { Grid, Image, Header, Card, Icon, Input } from 'semantic-ui-react'
 import {connect} from 'react-redux'
 import axios from 'axios'
+
 
 
  class Film extends Component {
@@ -13,10 +14,11 @@ import axios from 'axios'
             dataFilm:[],
             loading:true,
             
+            
         }
     }
     
-    // get data film dari tvmaze
+    // get data film marvel dari tvmaze
     getDataFilm = async ()=>{
         try{
             await axios.get(`https://api.tvmaze.com/search/shows?q=marvel`, {crossDomain: true})
@@ -36,6 +38,30 @@ import axios from 'axios'
         }
     }
 
+    // get data search film 
+    getDataSearch = async (e)=>{
+        if (e.target.value === ""){
+            this.getDataFilm()
+        }else{
+            try{
+                await axios.get(`https://api.tvmaze.com/search/shows?q=${e.target.value}`, {crossDomain: true})
+                .then ((res) => {
+
+                    console.log(res.data)
+
+                    let dataRes = res.data
+                    this.setState({
+                    dataFilm:dataRes,
+                  
+                    })   
+                })
+            }
+            catch(error){
+                alert(JSON.stringify(error.message))
+            }
+        }
+    }
+
     componentDidMount = async () => { // component didmount adalah component yg dijalankan sebelum kita merender halaman kita 
         await this.getDataFilm()
       }
@@ -44,7 +70,7 @@ import axios from 'axios'
     return(
         <>
         <div>
-        <Header size='large'>Databases Films</Header>
+        <Header style={{marginTop:20}} size='large'>Databases Films</Header>
                 <Grid celled='internally'>
                     <Grid.Row>
                         <Grid.Column width={2}>
@@ -53,8 +79,14 @@ import axios from 'axios'
                             <Image style={{marginTop:20}} src='https://cdn.pixabay.com/photo/2015/03/26/09/43/lenses-690179__480.jpg' />
                         </Grid.Column>
                         <Grid.Column width={10}>
+                            <div style={{marginBottom:"20px"}}>
+                                <Input action icon='search' placeholder='Search Films...'
+                                onChange={(e)=>{this.getDataSearch(e)}}
+                                />  
+                           </div>
+
                                     {/* Card data Film */}
-                                        <Grid columns={3} divided>
+                                        <Grid  columns={3} divided>
                                         {this.state.dataFilm.map((data, key) =>{
                                             var gambar = {...data.show.image}
                                             var rating = {...data.show.rating}
